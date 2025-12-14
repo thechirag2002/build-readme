@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to Markdown Converter</title>
+    <script src="https://cdn.jsdelivr.net/npm/turndown@7.1.1/dist/turndown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@14.1.2/marked.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="title">✨ Text → Markdown</div>
+            <div class="header-actions">
+                <button class="image-upload" onclick="openImageModal()">
+                    🖼️ Add Image
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span>
+                    <span id="theme-text">Dark</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="editor-panel left">
+                <div class="panel-header">
+                    <span>📝 Rich Text Editor</span>
+                    <div class="toolbar">
+                        <div class="toolbar-group">
+                            <button onclick="formatText('bold')" title="Ctrl+B">𝐁</button>
+                            <button onclick="formatText('italic')" title="Ctrl+I">𝐈</button>
+                            <button onclick="formatText('underline')" title="Ctrl+U">𝐔</button>
+                        </div>
+                        <div class="toolbar-group">
+                            <button onclick="increaseFontSize()" title="Ctrl+Shift+>">A+</button>
+                            <button onclick="decreaseFontSize()" title="Ctrl+Shift+<">A−</button>
+                            <select id="headingSelect">
+                                <option>Paragraph</option>
+                                <option value="h1">H1</option>
+                                <option value="h2">H2</option>
+                                <option value="h3">H3</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-group">
+                            <input type="color" id="color" title="Color">
+                            <button onclick="formatText('insertUnorderedList')" title="Bullets">•</button>
+                            <button onclick="formatText('insertOrderedList')" title="Numbers">1.</button>
+                            <button onclick="formatText('insertHTML', getQuoteHTML())" title="Quote">"</button>
+                            <button onclick="insertCodeBlock()" title="Code Block">```
+                            <button onclick="insertLink()" title="Link">🔗</button>
+                        </div>
+                    </div>
+                    <button class="copy-btn" onclick="copyLeftEditor()" title="Copy Rich Text">📋</button>
+                </div>
+                <div id="textEditor" class="editor" contenteditable="true" placeholder="Start typing... Use toolbar or shortcuts (Ctrl+B, Ctrl+I, Ctrl+Shift+>, Ctrl+Enter to convert)"></div>
+            </div>
+            
+            <button id="convertBtn" class="convert-btn" title="Convert → (Ctrl+Enter)">→</button>
+            
+            <div class="editor-panel right">
+                <div class="panel-header">
+                    <span>📄 Markdown Output</span>
+                    <span class="preview-label">Live Preview Below</span>
+                    <button class="copy-btn" onclick="copyMarkdownEditor()" title="Copy Markdown">📋</button>
+                </div>
+                <div id="markdownEditor" class="editor" readonly tabindex="-1"></div>
+                <div id="preview" class="preview-pane"></div>
+            </div>
+        </div>
+        
+        <div class="status">
+            ⌨️ Shortcuts: Ctrl+B/I/U | Ctrl+Shift+>/<> (size) | Ctrl+Enter (convert) | 🖼️ Images: URL or File Upload | MIT License -  Fully Open Source
+        </div>
+    </div>
+
+    <!-- Image Upload Modal -->
+    <div id="imageModal" class="image-modal">
+        <div class="modal-content">
+            <div class="modal-header">🖼️ Insert Image</div>
+            <div class="input-group">
+                <label>Image URL (or leave blank to upload file)</label>
+                <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+            </div>
+            <div class="input-group">
+                <label>OR Upload from Computer</label>
+                <input type="file" id="imageFile" accept="image/*">
+                <small>Supports JPG, PNG, GIF, WebP</small>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeImageModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="insertImage()">Insert Image</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
